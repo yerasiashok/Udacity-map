@@ -43,7 +43,7 @@ class MainComponent extends React.Component {
           <a href="javascript:void(0)" className="closebtn" onClick={() => this.closeNav()}>&times;</a>
           <div>
             <input id="places-search" type="text" aria-label="Places Search" placeholder="Ex: wipro limited" onChange={(e) => this.onChangeFilter(e)}/>
-            <input id="go-places" aria-label="Filter Button" type="button" value="Filter"/>
+            <input id="go-places" aria-label="Filter Button" type="button" value="Filter" onClick={(e) => this.props.displayLocations(this.state.filteredPlaces)}/>
           </div>
           <div>
             <ul>

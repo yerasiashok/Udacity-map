@@ -8,7 +8,7 @@ To get started developing right away:
 * Install all project dependencies with `npm install`
 * Start the development server with `npm start`
 * Install the production server with `npm run build` and `npm install -g serve`
-* Start Production server with `serve -s build`
+* Start Production server with `serve -s build` (Will suport offline features)
 
 
 ## How to use

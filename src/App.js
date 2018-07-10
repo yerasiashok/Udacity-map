@@ -160,49 +160,6 @@ populateInfoWindow = (marker, infowindow, position) => {
   }
 }
 
-
-displayLocationsFirstTime = (poi) => {
-    var largeInfowindow = new window.google.maps.InfoWindow();
-    var markers=[];
-    // Style the markers a bit. This will be our listing marker icon.
-    var defaultIcon = this.makeMarkerIcon('0091ff');
-
-    // Create a "highlighted location" marker color for when the user
-    // mouses over the marker.
-    var highlightedIcon = this.makeMarkerIcon('FFFF24');
-
-    // The following group uses the location array to create an array of markers on initialize.
-    for (var i = 0; i < poi.length; i++) {
-      // Get the position from the location array.
-      var position = poi[i].location;
-      var title = poi[i].title;
-      // Create a marker per location, and put into markers array.
-      var marker = new window.google.maps.Marker({
-        position: position,
-        title: title,
-        animation: window.google.maps.Animation.DROP,
-        icon: defaultIcon,
-        id: i
-      });
-      // Push the marker to our array of markers.
-      markers.push(marker);
-      // Create an onclick event to open the large infowindow at each marker.
-      marker.addListener('click', function() {
-        this.populateInfoWindow(this, largeInfowindow, position);
-      });
-      // Two event listeners - one for mouseover, one for mouseout,
-      // to change the colors back and forth.
-      marker.addListener('mouseover', function() {
-        this.setIcon(highlightedIcon);
-      });
-      marker.addListener('mouseout', function() {
-        this.setIcon(defaultIcon);
-      });
-    }
-    this.setState({markers});
-    this.showListings() 
-  }
-
   render() {
     return (
       <main >

@@ -10,23 +10,19 @@ var polygon = null;
 // over the number of places that show.
 var placeMarkers = [];
 var locations = [
-    {title: 'Wipro Infotech Ltd', location: {lat: 12.975498, lng: 77.599139}},
-    {title: 'Wipro Limited', location: {lat: 12.914930, lng: 77.603831}},
-    {title: 'Wipro', location: {lat: 12.906061, lng: 77.595797}},
-    //{title: 'Wipro Limited Hyderadad', location: {lat: 17.443175, lng: 78.299162}},
-    //{title: 'Wipro Limited Infotech Hyderadad', location: {lat: 17.448547, lng: 78.480557}},
-    {title: 'Wipro BPS Hyderadad', location: {lat: 17.463233, lng: 78.373450}},
-    {title: 'Wipro Vizag ', location: {lat: 17.737244, lng: 83.312235}},
-    {title: 'Wipro Limited Chennai', location: {lat: 12.909535, lng: 80.227160}},
-    //{title: 'Wipro Systems Limited Chennai', location: {lat: 13.041495, lng: 80.257229}},
-    //{title: 'Wipro Infotech Chennai', location: {lat: 13.042771, lng: 80.255482}},
-    {title: 'Wipro Technologies Kochi ', location: {lat: 10.016199, lng: 76.365412}},
-    {title: 'Wipro Limited Kochi ', location: {lat: 9.974885, lng: 76.300649}},
-    {title: 'Wipro Limited Pune ', location: {lat: 18.529534, lng: 73.842186}},
-    {title: 'Wipro Infotech Mumbai ', location: {lat: 19.121515, lng: 72.911932}},
-    {title: 'Wipro Kolkata ', location: {lat: 22.583011, lng: 88.430595}},
-    {title: 'Wipro Delhi', location: {lat: 28.645672, lng: 77.284676}},
-    {title: 'Wipro Indore', location: {lat: 22.749010, lng: 75.801279}}
+    {id: 0, title: 'Wipro Infotech Ltd', location: {lat: 12.975498, lng: 77.599139}},
+    {id: 1, title: 'Wipro Limited', location: {lat: 12.914930, lng: 77.603831}},
+    {id: 2, title: 'Wipro', location: {lat: 12.906061, lng: 77.595797}},
+    {id: 3, title: 'Wipro BPS Hyderadad', location: {lat: 17.463233, lng: 78.373450}},
+    {id: 4, title: 'Wipro Vizag ', location: {lat: 17.737244, lng: 83.312235}},
+    {id: 5, title: 'Wipro Limited Chennai', location: {lat: 12.909535, lng: 80.227160}},
+    {id: 6, title: 'Wipro Technologies Kochi ', location: {lat: 10.016199, lng: 76.365412}},
+    {id: 7, title: 'Wipro Limited Kochi ', location: {lat: 9.974885, lng: 76.300649}},
+    {id: 8, title: 'Wipro Limited Pune ', location: {lat: 18.529534, lng: 73.842186}},
+    {id: 9, title: 'Wipro Infotech Mumbai ', location: {lat: 19.121515, lng: 72.911932}},
+    {id: 10, title: 'Wipro Kolkata ', location: {lat: 22.583011, lng: 88.430595}},
+    {id: 11, title: 'Wipro Delhi', location: {lat: 28.645672, lng: 77.284676}},
+    {id: 12, title: 'Wipro Indore ', location: {lat: 22.749010, lng: 75.801279}}
   ];
 
 function initMap() {
@@ -101,7 +97,7 @@ function initMap() {
   // Constructor creates a new map - only center and zoom are required.
   map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 17.443175, lng: 78.373450},
-    zoom: 13,
+    zoom: 3,
     styles: styles,
     mapTypeControl: false
   });
@@ -114,7 +110,7 @@ function initMap() {
 
   // These are the real estate listings that will be shown to the user.
   // Normally we'd have these in a database instead.
-  //displayLocations(locations)
+  displayLocations(locations)
 }
 function displayLocations(poi){
   hideMarkers(markers)
@@ -156,27 +152,19 @@ function displayLocations(poi){
       this.setIcon(defaultIcon);
     });
   }
-  console.log(markers)
-  console.log(poi)
+  
   showListings()
   
-  // Listen for the event fired when the user selects a prediction from the
-  // picklist and retrieve more details for that place.
-  /*searchBox.addListener('places_changed', function() {
-    searchBoxPlaces(this);
-  });*/
-
-  // Listen for the event fired when the user selects a prediction and clicks
-  // "go" more details for that place.
-  //document.getElementById('go-places').addEventListener('click', textSearchPlaces);
 }
 
 // This function populates the infowindow when the marker is clicked. We'll only allow
 // one infowindow which will open at the marker that is clicked, and populate based
 // on that markers position.
 function populateInfoWindow(marker, infowindow) {
-  // Check to make sure the infowindow is not already opened on this marker.
-  if (infowindow.marker != marker) {
+var position = locations[marker.id].location;
+var foursquareAddr;
+  var info = '';
+  if (infowindow.marker !== marker) {
     // Clear the infowindow content to give the streetview time to load.
     infowindow.setContent('');
     infowindow.marker = marker;
@@ -184,17 +172,35 @@ function populateInfoWindow(marker, infowindow) {
     infowindow.addListener('closeclick', function() {
       infowindow.marker = null;
     });
-    var streetViewService = new google.maps.StreetViewService();
+    var streetViewService = new window.google.maps.StreetViewService();
     var radius = 50;
     // In case the status is OK, which means the pano was found, compute the
     // position of the streetview image, then calculate the heading, then get a
     // panorama from that and set the options
+    fetch("https://api.foursquare.com/v2/venues/search?ll=" +position.lat+"," +position.lng + "&oauth_token=OIAF5Z3HZOL2HPF5IDJVCWALEF32MJX1IUBKOO1FT2PMBFFU&v=20180709")
+      .then(res => res.json())
+      .then(
+        (result) => {
+          foursquareAddr = result.response.venues[0].location;
+          if (foursquareAddr.address)
+            info = foursquareAddr.address + ",";
+          if(foursquareAddr.city)
+            info +=  foursquareAddr.city + ",";
+          if(foursquareAddr.country)
+            info += foursquareAddr.country; 
+          streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+        },
+        (error) => {
+          foursquareAddr = "Foursquare Not Responding"
+        }
+      )
+
     function getStreetView(data, status) {
-      if (status == google.maps.StreetViewStatus.OK) {
+      if (status === window.google.maps.StreetViewStatus.OK) {
         var nearStreetViewLocation = data.location.latLng;
-        var heading = google.maps.geometry.spherical.computeHeading(
+        var heading = window.google.maps.geometry.spherical.computeHeading(
           nearStreetViewLocation, marker.position);
-          infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
+          infowindow.setContent('<div>' + marker.title + '</div><div> <h4>'+ info +'</h4></div><div id="pano"></div>');
           var panoramaOptions = {
             position: nearStreetViewLocation,
             pov: {
@@ -202,18 +208,17 @@ function populateInfoWindow(marker, infowindow) {
               pitch: 30
             }
           };
-        var panorama = new google.maps.StreetViewPanorama(
+        var panorama = new window.google.maps.StreetViewPanorama(
           document.getElementById('pano'), panoramaOptions);
       } else {
-        infowindow.setContent('<div>' + marker.title + '</div>' +
+        infowindow.setContent('<div>' + marker.title + '</div><div> <h4>' + info + '</h4></div>' +
           '<div>No Street View Found</div>');
       }
     }
     // Use streetview service to get the closest streetview image within
     // 50 meters of the markers position
-    streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
     // Open the infowindow on the correct marker.
-    infowindow.open(map, marker);
+    infowindow.open(window.map, marker);
   }
 }
 
@@ -248,68 +253,3 @@ function makeMarkerIcon(markerColor) {
     new google.maps.Size(21,34));
   return markerImage;
 }
-/*
-// This function fires when the user selects a searchbox picklist item.
-// It will do a nearby search using the selected query string or place.
-function searchBoxPlaces(searchBox) {
-  hideMarkers(placeMarkers);
-  var places = searchBox.getPlaces();
-  // For each place, get the icon, name and location.
-  createMarkersForPlaces(places);
-  if (places.length == 0) {
-    window.alert('We did not find any places matching that search!');
-  }
-}
-
-// This function firest when the user select "go" on the places search.
-// It will do a nearby search using the entered query string or place.
-function textSearchPlaces() {
-  var bounds = map.getBounds();
-  hideMarkers(placeMarkers);
-  var placesService = new google.maps.places.PlacesService(map);
-  placesService.textSearch({
-    query: document.getElementById('places-search').value,
-    bounds: bounds
-  }, function(results, status) {
-    if (status === google.maps.places.PlacesServiceStatus.OK) {
-      createMarkersForPlaces(results);
-    }
-  });
-}
-
-//document.getElementById('Wipro Indore').addEventListener('click', hideMarkers(markers));
-
-// This function creates markers for each place found in either places search.
-function createMarkersForPlaces(places) {
-  var bounds = new google.maps.LatLngBounds();
-  for (var i = 0; i < places.length; i++) {
-    var place = places[i];
-    var icon = {
-      url: place.icon,
-      size: new google.maps.Size(35, 35),
-      origin: new google.maps.Point(0, 0),
-      anchor: new google.maps.Point(15, 34),
-      scaledSize: new google.maps.Size(25, 25)
-    };
-    // Create a marker for each place.
-    var marker = new google.maps.Marker({
-      map: map,
-      icon: icon,
-      title: place.name,
-      position: place.geometry.location,
-      id: place.id
-    });
-    // If a marker is clicked, do a place details search on it in the next function.
-    marker.addListener('click', function() {
-    getPlacesDetails(this, place);
-    });
-    placeMarkers.push(marker);
-    if (place.geometry.viewport) {
-      // Only geocodes have viewport.
-      bounds.union(place.geometry.viewport);
-    } else {
-      bounds.extend(place.geometry.location);
-    }
-  }
-  map.fitBounds(bounds);
-}*/
