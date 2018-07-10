@@ -20,26 +20,43 @@ class MainComponent extends React.Component {
     this.setState({filteredPlaces: updatedList});
     this.props.displayLocations(updatedList);
   }
+  closeNav = () => {
+    document.getElementById("navigate").style.display='none';
+    document.getElementById("map").style.left = "0px"; 
+    document.getElementById("map").style.width = "100%";
+  }
+  openNav = () => {
+    document.getElementById("navigate").style.display = "block";
+    document.getElementById("navigate").style.width = "300px";
+    document.getElementById("map").style.left = "310px"; 
+    document.getElementById("map").style.width = "75%";
+  }
   render() {
     return (  
-      <div className="container">
-      <nav className="options-box">
-        <h1>WIPRO Office Locations</h1>
-        <div>
-          <input id="places-search" type="text" placeholder="Ex: wipro limited" onChange={(e) => this.onChangeFilter(e)}/>
-          <input id="go-places" type="button" value="Filter" onClick={(e) => this.props.displayLocationsFirstTime(this.state.filteredPlaces)}/>
-        </div>
-        <div>
-          <ul>
-            {this.state.filteredPlaces.map((place) => (
-              <li key={place.title} > <a href="#" onClick={(e) => this.props.displayLocations([place])}>{place.title} </a></li>
-            ))}
-          </ul>
-        </div>
-      </nav>
-      <div id="map">
+      <div>
+        <header id="mySidenav" className="sidenav">
+          <span id="hamberger" onClick={() => this.openNav()}>&#9776;
+            <b>WIPRO Offices</b>
+          </span>
+        </header>
+        <nav className="options-box container" id="navigate" >
+          <a href="javascript:void(0)" className="closebtn" onClick={() => this.closeNav()}>&times;</a>
+          <div>
+            <input id="places-search" type="text" aria-label="Places Search" placeholder="Ex: wipro limited" onChange={(e) => this.onChangeFilter(e)}/>
+            <input id="go-places" aria-label="Filter Button" type="button" value="Filter"/>
+          </div>
+          <div>
+            <ul>
+              {this.state.filteredPlaces.map((place) => (
+                <li key={place.title} > <a href="#" onClick={(e) => this.props.displayLocations([place])}>{place.title} </a></li>
+              ))}
+            </ul>
+          </div>
+        </nav>
+      <div id="map" role="application">
       </div>
-      </div>  
+    </div>  
+
     )
   }
 }

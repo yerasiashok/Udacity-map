@@ -100,7 +100,8 @@ class MapsApp extends React.Component {
 // on that markers position.
 populateInfoWindow = (marker, infowindow, position) => {
   // Check to make sure the infowindow is not already opened on this marker.
-  var foursquareAddr = "US";
+  var foursquareAddr;
+  var info = '';
   if (infowindow.marker !== marker) {
     // Clear the infowindow content to give the streetview time to load.
     infowindow.setContent('');
@@ -118,7 +119,13 @@ populateInfoWindow = (marker, infowindow, position) => {
       .then(res => res.json())
       .then(
         (result) => {
-          foursquareAddr = result.response.venues[0].location.country;
+          foursquareAddr = result.response.venues[0].location;
+          if (foursquareAddr.address)
+            info = foursquareAddr.address + ",";
+          if(foursquareAddr.city)
+            info +=  foursquareAddr.city + ",";
+          if(foursquareAddr.country)
+            info += foursquareAddr.country; 
           streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
         },
         (error) => {
@@ -131,7 +138,7 @@ populateInfoWindow = (marker, infowindow, position) => {
         var nearStreetViewLocation = data.location.latLng;
         var heading = window.google.maps.geometry.spherical.computeHeading(
           nearStreetViewLocation, marker.position);
-          infowindow.setContent('<div>' + marker.title + '</div><div> <h4>'+foursquareAddr+'</h4></div><div id="pano"></div>');
+          infowindow.setContent('<div>' + marker.title + '</div><div> <h4>'+ info +'</h4></div><div id="pano"></div>');
           var panoramaOptions = {
             position: nearStreetViewLocation,
             pov: {
@@ -142,7 +149,7 @@ populateInfoWindow = (marker, infowindow, position) => {
         var panorama = new window.google.maps.StreetViewPanorama(
           document.getElementById('pano'), panoramaOptions);
       } else {
-        infowindow.setContent('<div>' + marker.title + '</div><div> <h4>' + foursquareAddr+ '</h4></div>' +
+        infowindow.setContent('<div>' + marker.title + '</div><div> <h4>' + info + '</h4></div>' +
           '<div>No Street View Found</div>');
       }
     }
@@ -196,10 +203,9 @@ displayLocationsFirstTime = (poi) => {
     this.showListings() 
   }
 
-
   render() {
     return (
-      <div className="container">
+      <main >
 
         <Route exact path='/' render={() => (
           <MainComponent
@@ -208,7 +214,7 @@ displayLocationsFirstTime = (poi) => {
           />
         )}/>
 
-      </div>
+      </main>
     )
   }
 }

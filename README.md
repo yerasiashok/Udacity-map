@@ -5,8 +5,11 @@ Welcom to MyMaps, Where you can keep track of WIPRO Offices in India here
 
 To get started developing right away:
 
-* install all project dependencies with `npm install`
-* start the development server with `npm start`
+* Install all project dependencies with `npm install`
+* Start the development server with `npm start`
+* Install the production server with `npm run build` and `npm install -g serve`
+* Start Production server with `serve -s build`
+
 
 ## How to use
 
