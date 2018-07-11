@@ -34,13 +34,13 @@ class MainComponent extends React.Component {
     return (  
       <div>
         <header id="mySidenav" className="sidenav">
-          <button  tabindex="1" id="hamberger" onClick={() => this.openNav()}>&#9776;</button>
+          <button  tabIndex="1" id="hamberger" onClick={() => this.openNav()}>&#9776;</button>
             <b >WIPRO Offices</b>
           
 
         </header>
         <nav className="options-box container" id="navigate" >
-          <a href="javascript:void(0)" tabindex="2" className="closebtn" onClick={() => this.closeNav()}>&times;</a>
+          <a href="javascript:void(0)" tabIndex="2" className="closebtn" onClick={() => this.closeNav()}>&times;</a>
           <div>
             <input id="places-search" type="text" aria-label="Places Search" placeholder="Ex: wipro limited" onChange={(e) => this.onChangeFilter(e)}/>
             <input id="go-places" aria-label="Filter Button" type="button" value="Filter" onClick={(e) => this.props.displayLocations(this.state.filteredPlaces)}/>
