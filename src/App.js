@@ -6,8 +6,7 @@ import MainComponent from './MainComponent'
 
 class MapsApp extends React.Component {
   state = {
-    placesList: PlacesAPI.locations,
-    markers: []
+    placesList: PlacesAPI.locations
   }
   
   componentWillMount () {
@@ -28,85 +27,46 @@ class MapsApp extends React.Component {
     return markerImage;
   }
 
-  //hides the markers
-  hideMarkers = (markers) => {
-    window.hideMarkers(window.markers)
-    for (var i = 0; i < this.state.markers.length; i++) {
-      this.state.markers[i].setMap(null);
-    }
+  hideAllMarkers = () => {
+    for (var i = 0; i < window.markers.length; i++) {
+      window.markers[i].setMap(null);
+    };
   }
 
-  showListings = () => {
+  showListingsOnly = (markers) => {
     var bounds = new window.google.maps.LatLngBounds();
     // Extend the boundaries of the map for each marker and display the marker
-    for (var i = 0; i < this.state.markers.length; i++) {
-      this.state.markers[i].setMap(window.map);
-      bounds.extend(this.state.markers[i].position);
+    for (var i = 0; i < markers.length; i++) {
+      markers[i].setMap(window.map);
+      bounds.extend(markers[i].position);
     }
     window.map.fitBounds(bounds);
   }
-
-  displayLocations = (poi) => {
+  
+  displayLocations = (places) => {
     if(!window.google){
       window.alert('Issue while loading the Map. \nCheck for Internet connectivity!!');
       return;
     }
-    this.hideMarkers(this.state.markers)
-      this.state.markers = []
-      //this.setState({markers : []});
-
-    if (poi.length === 0) {
+    var markers = places.map(place => window.markers[place.id]) 
+    this.hideAllMarkers()
+    if (places.length === 0) {
       window.alert('We did not find any places matching that search!');
       return;
     }
-    var largeInfowindow = new window.google.maps.InfoWindow();
-
-    // Style the markers a bit. This will be our listing marker icon.
-    var defaultIcon = this.makeMarkerIcon('0091ff');
-
-    // Create a "highlighted location" marker color for when the user
-    // mouses over the marker.
-    var highlightedIcon = this.makeMarkerIcon('FFFF24');
-
-    // The following group uses the location array to create an array of markers on initialize.
-    for (var i = 0; i < poi.length; i++) {
-      // Get the position from the location array.
-      var position = poi[i].location;
-      var title = poi[i].title;
-      // Create a marker per location, and put into markers array.
-      var marker = new window.google.maps.Marker({
-        position: position,
-        title: title,
-        animation: window.google.maps.Animation.DROP,
-        icon: defaultIcon,
-        id: i
-      });
-      // Push the marker to our array of markers.
-      this.state.markers.push(marker);
-      // Create an onclick event to open the large infowindow at each marker.
-      marker.addListener('click', function() {
-        window.populateInfoWindow(this, largeInfowindow, position);
-      });
-      // Two event listeners - one for mouseover, one for mouseout,
-      // to change the colors back and forth.
-      marker.addListener('mouseover', function() {
-        this.setIcon(highlightedIcon);
-      });
-      marker.addListener('mouseout', function() {
-        this.setIcon(defaultIcon);
-      });
-    }
-    this.showListings()
-    if(this.state.markers.length === 1){
-        this.populateInfoWindow(this.state.markers[0], largeInfowindow, position)
+    
+    this.showListingsOnly(markers)    
+    if(places.length === 1){
+        this.populateInfoWindow(markers[0], window.largeInfowindow)
     }
   }
 
 // This function populates the infowindow when the marker is clicked. We'll only allow
 // one infowindow which will open at the marker that is clicked, and populate based
 // on that markers position.
-populateInfoWindow = (marker, infowindow, position) => {
+populateInfoWindow = (marker, infowindow) => {
   // Check to make sure the infowindow is not already opened on this marker.
+  var position = this.state.placesList[marker.id].location;
   var foursquareAddr;
   var info = '';
   if (infowindow.marker !== marker) {

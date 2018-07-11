@@ -2,13 +2,13 @@ var map ={};
 
 // Create a new blank array for all the listing markers.
 var markers = [];
-
+var largeInfowindow;
 // This global polygon variable is to ensure only ONE polygon is rendered.
-var polygon = null;
+//var polygon = null;
 
 // Create placemarkers array to use in multiple functions to have control
 // over the number of places that show.
-var placeMarkers = [];
+// placeMarkers = [];
 var locations = [
     {id: 0, title: 'Wipro Infotech Ltd', location: {lat: 12.975498, lng: 77.599139}},
     {id: 1, title: 'Wipro Limited', location: {lat: 12.914930, lng: 77.603831}},
@@ -27,6 +27,7 @@ var locations = [
 
 function initMap() {
   // Create a styles array to use with the map.
+  markers = []
   var styles = [
     {
       featureType: 'water',
@@ -102,21 +103,12 @@ function initMap() {
     mapTypeControl: false
   });
 
-  // Create a searchbox in order to execute a places search
-  //var searchBox = new google.maps.places.SearchBox(
-      //document.getElementById('places-search'));
-  // Bias the searchbox to within the bounds of the map.
-  //searchBox.setBounds(map.getBounds());
-
-  // These are the real estate listings that will be shown to the user.
-  // Normally we'd have these in a database instead.
   if(map){
     displayLocations(locations)
   }
 }
 function displayLocations(poi){
-  hideMarkers(markers)
-  var largeInfowindow = new google.maps.InfoWindow();
+  largeInfowindow = new google.maps.InfoWindow();
 
   // Style the markers a bit. This will be our listing marker icon.
   var defaultIcon = makeMarkerIcon('0091ff');
@@ -152,17 +144,15 @@ function displayLocations(poi){
     marker.addListener('mouseout', function() {
       this.setIcon(defaultIcon);
     });
-  }
-  
-  showListings()
-  
+  }  
+  showListings()  
 }
 
 // This function populates the infowindow when the marker is clicked. We'll only allow
 // one infowindow which will open at the marker that is clicked, and populate based
 // on that markers position.
-function populateInfoWindow(marker, infowindow, position) {
-//var position = locations[marker.id].location;
+function populateInfoWindow(marker, infowindow) {
+  var position = locations[marker.id].location;
   var foursquareAddr;
   var info = '';
   if (infowindow.marker !== marker) {
