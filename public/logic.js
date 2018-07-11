@@ -1,14 +1,8 @@
 var map ={};
-
 // Create a new blank array for all the listing markers.
 var markers = [];
 var largeInfowindow;
-// This global polygon variable is to ensure only ONE polygon is rendered.
-//var polygon = null;
 
-// Create placemarkers array to use in multiple functions to have control
-// over the number of places that show.
-// placeMarkers = [];
 var locations = [
     {id: 0, title: 'Wipro Infotech Ltd', location: {lat: 12.975498, lng: 77.599139}},
     {id: 1, title: 'Wipro Limited', location: {lat: 12.914930, lng: 77.603831}},
@@ -157,7 +151,7 @@ function populateInfoWindow(marker, infowindow) {
   var info = '';
   if (infowindow.marker !== marker) {
     // Clear the infowindow content to give the streetview time to load.
-    infowindow.setContent('');
+    infowindow.setContent('Loading...');
     infowindow.marker = marker;
     // Make sure the marker property is cleared if the infowindow is closed.
     infowindow.addListener('closeclick', function() {

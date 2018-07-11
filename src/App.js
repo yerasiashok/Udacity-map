@@ -9,7 +9,7 @@ class MapsApp extends React.Component {
     placesList: PlacesAPI.locations
   }
   
-  componentWillMount () {
+  componentWillMount () { //asyc loads Google Map
     const script = document.createElement("script");
     script.src = "https://maps.googleapis.com/maps/api/js?libraries=places,geometry,drawing&key=AIzaSyAldCTjr02LfSu47jQGalmM_ETKPkBNQiM&v=3&callback=initMap";
     script.async = true;
@@ -65,13 +65,13 @@ class MapsApp extends React.Component {
 // one infowindow which will open at the marker that is clicked, and populate based
 // on that markers position.
 populateInfoWindow = (marker, infowindow) => {
-  // Check to make sure the infowindow is not already opened on this marker.
   var position = this.state.placesList[marker.id].location;
   var foursquareAddr;
   var info = '';
+  // Check to make sure the infowindow is not already opened on this marker.
   if (infowindow.marker !== marker) {
     // Clear the infowindow content to give the streetview time to load.
-    infowindow.setContent('');
+    infowindow.setContent('Loading ...');
     infowindow.marker = marker;
     // Make sure the marker property is cleared if the infowindow is closed.
     infowindow.addListener('closeclick', function() {
