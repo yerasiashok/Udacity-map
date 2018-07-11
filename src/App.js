@@ -52,7 +52,9 @@ class MapsApp extends React.Component {
       return;
     }
     this.hideMarkers(this.state.markers)
-    this.state.markers = []
+      this.state.markers = []
+      //this.setState({markers : []});
+
     if (poi.length === 0) {
       window.alert('We did not find any places matching that search!');
       return;
