@@ -1,4 +1,4 @@
-var map;
+var map ={};
 
 // Create a new blank array for all the listing markers.
 var markers = [];
@@ -111,11 +111,13 @@ function initMap() {
 
   // These are the real estate listings that will be shown to the user.
   // Normally we'd have these in a database instead.
-  displayLocations(locations)
+  if(map){
+    displayLocations(locations)
+  }
 }
 function displayLocations(poi){
+  console.log("hai")
   hideMarkers(markers)
-  markers = []
   var largeInfowindow = new google.maps.InfoWindow();
 
   // Style the markers a bit. This will be our listing marker icon.
@@ -142,7 +144,7 @@ function displayLocations(poi){
     markers.push(marker);
     // Create an onclick event to open the large infowindow at each marker.
     marker.addListener('click', function() {
-      populateInfoWindow(this, largeInfowindow);
+      populateInfoWindow(this, largeInfowindow, locations[marker.id].location);
     });
     // Two event listeners - one for mouseover, one for mouseout,
     // to change the colors back and forth.
@@ -161,8 +163,8 @@ function displayLocations(poi){
 // This function populates the infowindow when the marker is clicked. We'll only allow
 // one infowindow which will open at the marker that is clicked, and populate based
 // on that markers position.
-function populateInfoWindow(marker, infowindow) {
-var position = locations[marker.id].location;
+function populateInfoWindow(marker, infowindow, position) {
+//var position = locations[marker.id].location;
 var foursquareAddr;
   var info = '';
   if (infowindow.marker !== marker) {
@@ -229,6 +231,7 @@ var foursquareAddr;
 
 // This function will loop through the markers array and display them all.
 function showListings() {
+  console.log(markers)
   var bounds = new google.maps.LatLngBounds();
   // Extend the boundaries of the map for each marker and display the marker
   for (var i = 0; i < markers.length; i++) {

@@ -12,13 +12,12 @@ class MainComponent extends React.Component {
     filteredPlaces: this.props.places
   }
   onChangeFilter = (event) => {
-    var updatedList = this.props.places;
-    updatedList = updatedList.filter(function(item){
+    var updatedList = this.props.places.filter(function(item){
       return item.title.toLowerCase().search(
         event.target.value.toLowerCase()) !== -1;
     });
-    this.setState({filteredPlaces: updatedList});
-    this.props.displayLocations(updatedList);
+    this.setState({filteredPlaces: updatedList}, this.props.displayLocations(updatedList) );
+    //this.props.displayLocations(updatedList);
   }
   closeNav = () => {
     document.getElementById("navigate").style.display='none';

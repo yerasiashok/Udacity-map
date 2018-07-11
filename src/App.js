@@ -30,6 +30,7 @@ class MapsApp extends React.Component {
 
   //hides the markers
   hideMarkers = (markers) => {
+    window.hideMarkers(window.markers)
     for (var i = 0; i < this.state.markers.length; i++) {
       this.state.markers[i].setMap(null);
     }
@@ -82,7 +83,7 @@ class MapsApp extends React.Component {
       this.state.markers.push(marker);
       // Create an onclick event to open the large infowindow at each marker.
       marker.addListener('click', function() {
-        this.populateInfoWindow(this, largeInfowindow, position);
+        window.populateInfoWindow(this, largeInfowindow, position);
       });
       // Two event listeners - one for mouseover, one for mouseout,
       // to change the colors back and forth.
