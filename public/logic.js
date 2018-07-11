@@ -192,9 +192,12 @@ var foursquareAddr;
           streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
         },
         (error) => {
-          foursquareAddr = "Foursquare Not Responding"
+          info += "Off!! Foursquare Not Responding"
+          infowindow.setContent('<div>' + marker.title + '</div><div> <h2>' + info + '</h2></div>' )
         }
-      )
+      ).catch(function(error) {
+        info += "Foursquare Not Responding"
+      });
 
     function getStreetView(data, status) {
       console.log("insude")

@@ -134,11 +134,11 @@ populateInfoWindow = (marker, infowindow, position) => {
           streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
         },
         (error) => {
-          console.log("error")
-          foursquareAddr = "Foursquare Not Responding"
+          info += "OFFLINE!!!. Foursquare Not Responding"
+          infowindow.setContent('<div>' + marker.title + '</div><div> <h2>' + info + '</h2></div>' )
         }
       ).catch(function(error) {
-        console.log("*************");
+        info += "Foursquare Not Responding"
     });
 
     function getStreetView(data, status) {
