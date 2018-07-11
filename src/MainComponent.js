@@ -35,9 +35,7 @@ class MainComponent extends React.Component {
       <div>
         <header id="mySidenav" className="sidenav">
           <button  tabIndex="1" id="hamberger" onClick={() => this.openNav()}>&#9776;</button>
-            <b >WIPRO Offices</b>
-          
-
+            <b aria-label="Map desctiption" role='heading'>WIPRO Offices</b>
         </header>
         <nav className="options-box container" id="navigate" >
           <a href="javascript:void(0)" tabIndex="2" className="closebtn" onClick={() => this.closeNav()}>&times;</a>
