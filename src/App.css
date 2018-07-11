@@ -4,6 +4,7 @@ body, .root {
   height: 100%;
   margin: 0;
   padding: 0;
+  background-color: black;
 }
 
 .container {
@@ -58,23 +59,39 @@ ul {
 
 #map {
   bottom:4px;
-  top:40px;
-  height: 100%;
-  width:75%;
-  left: 315px;
+  top:48px;
+  height: 92%;
+  width:75%x;
+  left: 330px;
   position: absolute;
-  right: 1px;
+  right: 0px;
   
 }
 
 @media screen and (min-width: 375px) {
 #navigate{
   display:none;
+  top:48px;
 }
     #map{
       left : 0px; 
       width : 100%;
       position: absolute;
+    }
+   
+}
+
+@media screen and (min-width: 776px) {
+
+ #navigate {
+  display :block;
+  width :300px;
+}
+   
+    #map{
+      left : 310px; 
+      width : 75%;
+      
     }
    
 }
@@ -88,7 +105,7 @@ ul {
   font-size:30px;
   cursor:pointer;
   color: black;
-  padding: 10px 1px;
+  padding: 10px 1px 10px 1px;
 }
 
 #navigate .closebtn {
@@ -127,5 +144,13 @@ ul {
 }
 
 
+b {
+  font-size: 40px;
+  align-self: center;
+  color: white;
 
+}
 
+button {
+  height: 48px;
+}
