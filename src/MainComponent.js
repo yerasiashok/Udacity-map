@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import './App.css'
-import * as MapStyles from './MapStyles.js'
+//import * as MapStyles from './MapStyles.js'
 
 class MainComponent extends React.Component { 
   static propTypes = {
@@ -12,13 +12,12 @@ class MainComponent extends React.Component {
     filteredPlaces: this.props.places
   }
   onChangeFilter = (event) => {
-    var updatedList = this.props.places;
-    updatedList = updatedList.filter(function(item){
+    var updatedList = this.props.places.filter(function(item){
       return item.title.toLowerCase().search(
         event.target.value.toLowerCase()) !== -1;
     });
-    this.setState({filteredPlaces: updatedList});
-    this.props.displayLocations(updatedList);
+    this.setState({filteredPlaces: updatedList}, this.props.displayLocations(updatedList) );
+    //this.props.displayLocations(updatedList);
   }
   closeNav = () => {
     document.getElementById("navigate").style.display='none';
@@ -38,6 +37,7 @@ class MainComponent extends React.Component {
           <button  tabindex="1" id="hamberger" onClick={() => this.openNav()}>&#9776;</button>
             <b >WIPRO Offices</b>
           
+
         </header>
         <nav className="options-box container" id="navigate" >
           <a href="javascript:void(0)" tabindex="2" className="closebtn" onClick={() => this.closeNav()}>&times;</a>
@@ -54,6 +54,7 @@ class MainComponent extends React.Component {
           </div>
         </nav>
       <div id="map" role="application">
+       <h2> Please Wait Map is Loading... </h2>
       </div>
     </div>  
 

@@ -1,4 +1,4 @@
-var map;
+var map ={};
 
 // Create a new blank array for all the listing markers.
 var markers = [];
@@ -110,11 +110,12 @@ function initMap() {
 
   // These are the real estate listings that will be shown to the user.
   // Normally we'd have these in a database instead.
-  displayLocations(locations)
+  if(map){
+    displayLocations(locations)
+  }
 }
 function displayLocations(poi){
   hideMarkers(markers)
-  markers = []
   var largeInfowindow = new google.maps.InfoWindow();
 
   // Style the markers a bit. This will be our listing marker icon.
@@ -141,7 +142,7 @@ function displayLocations(poi){
     markers.push(marker);
     // Create an onclick event to open the large infowindow at each marker.
     marker.addListener('click', function() {
-      populateInfoWindow(this, largeInfowindow);
+      populateInfoWindow(this, largeInfowindow, locations[marker.id].location);
     });
     // Two event listeners - one for mouseover, one for mouseout,
     // to change the colors back and forth.
@@ -160,9 +161,9 @@ function displayLocations(poi){
 // This function populates the infowindow when the marker is clicked. We'll only allow
 // one infowindow which will open at the marker that is clicked, and populate based
 // on that markers position.
-function populateInfoWindow(marker, infowindow) {
-var position = locations[marker.id].location;
-var foursquareAddr;
+function populateInfoWindow(marker, infowindow, position) {
+//var position = locations[marker.id].location;
+  var foursquareAddr;
   var info = '';
   if (infowindow.marker !== marker) {
     // Clear the infowindow content to give the streetview time to load.
@@ -191,9 +192,12 @@ var foursquareAddr;
           streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
         },
         (error) => {
-          foursquareAddr = "Foursquare Not Responding"
+          info += "Off!! Foursquare Not Responding"
+          infowindow.setContent('<div>' + marker.title + '</div><div> <h2>' + info + '</h2></div>' )
         }
-      )
+      ).catch(function(error) {
+        info += "Foursquare Not Responding"
+      });
 
     function getStreetView(data, status) {
       if (status === window.google.maps.StreetViewStatus.OK) {

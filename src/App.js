@@ -30,6 +30,7 @@ class MapsApp extends React.Component {
 
   //hides the markers
   hideMarkers = (markers) => {
+    window.hideMarkers(window.markers)
     for (var i = 0; i < this.state.markers.length; i++) {
       this.state.markers[i].setMap(null);
     }
@@ -46,8 +47,14 @@ class MapsApp extends React.Component {
   }
 
   displayLocations = (poi) => {
+    if(!window.google){
+      window.alert('Issue while loading the Map. \nCheck for Internet connectivity!!');
+      return;
+    }
     this.hideMarkers(this.state.markers)
-    this.state.markers = []
+      this.state.markers = []
+      //this.setState({markers : []});
+
     if (poi.length === 0) {
       window.alert('We did not find any places matching that search!');
       return;
@@ -78,7 +85,7 @@ class MapsApp extends React.Component {
       this.state.markers.push(marker);
       // Create an onclick event to open the large infowindow at each marker.
       marker.addListener('click', function() {
-        this.populateInfoWindow(this, largeInfowindow, position);
+        window.populateInfoWindow(this, largeInfowindow, position);
       });
       // Two event listeners - one for mouseover, one for mouseout,
       // to change the colors back and forth.
@@ -129,9 +136,12 @@ populateInfoWindow = (marker, infowindow, position) => {
           streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
         },
         (error) => {
-          foursquareAddr = "Foursquare Not Responding"
+          info += "OFFLINE!!!. Foursquare Not Responding"
+          infowindow.setContent('<div>' + marker.title + '</div><div> <h2>' + info + '</h2></div>' )
         }
-      )
+      ).catch(function(error) {
+        info += "Foursquare Not Responding"
+    });
 
     function getStreetView(data, status) {
       if (status === window.google.maps.StreetViewStatus.OK) {

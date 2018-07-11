@@ -64,11 +64,15 @@ ul {
   width:75%x;
   left: 330px;
   position: absolute;
-  right: 0px;
-  
+  right: 0px
 }
 
-@media screen and (min-width: 375px) {
+h2 {
+  color:red;
+  text-align:center;
+}
+
+@media screen and (max-width: 375px) {
 #navigate{
   display:none;
   top:48px;
@@ -97,7 +101,7 @@ ul {
 }
 
 #heading {
-  float: center;
+  text-align: center;
   padding: 40%;
 }
 
