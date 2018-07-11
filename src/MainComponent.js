@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import './App.css'
-import * as MapStyles from './MapStyles.js'
+//import * as MapStyles from './MapStyles.js'
 
 class MainComponent extends React.Component { 
   static propTypes = {

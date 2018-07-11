@@ -124,7 +124,6 @@ populateInfoWindow = (marker, infowindow, position) => {
       .then(res => res.json())
       .then(
         (result) => {
-          console.log(result)
           foursquareAddr = result.response.venues[0].location;
           if (foursquareAddr.address)
             info = foursquareAddr.address + ",";

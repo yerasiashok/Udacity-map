@@ -27,7 +27,6 @@ var locations = [
 
 function initMap() {
   // Create a styles array to use with the map.
-  console.log("inside initMap")
   var styles = [
     {
       featureType: 'water',
@@ -116,7 +115,6 @@ function initMap() {
   }
 }
 function displayLocations(poi){
-  console.log("hai")
   hideMarkers(markers)
   var largeInfowindow = new google.maps.InfoWindow();
 
@@ -165,7 +163,7 @@ function displayLocations(poi){
 // on that markers position.
 function populateInfoWindow(marker, infowindow, position) {
 //var position = locations[marker.id].location;
-var foursquareAddr;
+  var foursquareAddr;
   var info = '';
   if (infowindow.marker !== marker) {
     // Clear the infowindow content to give the streetview time to load.
@@ -202,7 +200,6 @@ var foursquareAddr;
       });
 
     function getStreetView(data, status) {
-      console.log("insude")
       if (status === window.google.maps.StreetViewStatus.OK) {
         var nearStreetViewLocation = data.location.latLng;
         var heading = window.google.maps.geometry.spherical.computeHeading(
@@ -231,7 +228,6 @@ var foursquareAddr;
 
 // This function will loop through the markers array and display them all.
 function showListings() {
-  console.log(markers)
   var bounds = new google.maps.LatLngBounds();
   // Extend the boundaries of the map for each marker and display the marker
   for (var i = 0; i < markers.length; i++) {

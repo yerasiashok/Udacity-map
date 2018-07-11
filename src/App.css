@@ -85,7 +85,7 @@ h2 {
 }
 
 #heading {
-  float: center;
+  text-align: center;
   padding: 40%;
 }
 

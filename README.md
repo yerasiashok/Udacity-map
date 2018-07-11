@@ -5,8 +5,14 @@ Welcom to MyMaps, Where you can keep track of WIPRO Offices in India here
 
 To get started developing right away:
 
+###Development Environment
+
 * Install all project dependencies with `npm install`
 * Start the development server with `npm start`
+
+### Production Environment
+
+(This includes Service Workers)
 * Install the production server with `npm run build` and `npm install -g serve`
 * Start Production server with `serve -s build` (Will suport offline features)
 
