@@ -17,6 +17,8 @@ class MainComponent extends React.Component {
       return item.title.toLowerCase().search(
         event.target.value.toLowerCase()) !== -1;
     });
+    window.largeInfowindow.marker = null;
+    window.largeInfowindow.close();
     this.setState({filteredPlaces: updatedList});
     this.props.displayLocations(updatedList);
   }

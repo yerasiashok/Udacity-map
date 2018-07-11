@@ -2,7 +2,7 @@ var map;
 
 // Create a new blank array for all the listing markers.
 var markers = [];
-
+var largeInfowindow;
 // Create placemarkers array to use in multiple functions to have control
 // over the number of places that show.
 var placeMarkers = [];
@@ -24,6 +24,7 @@ var locations = [
 
 function initMap() {
   // Create a styles array to use with the map.
+  markers = []
   var styles = [
     {
       featureType: 'water',
@@ -99,7 +100,7 @@ function initMap() {
     mapTypeControl: false
   });
   
-  var largeInfowindow = new google.maps.InfoWindow();
+  largeInfowindow = new google.maps.InfoWindow();
 
   // Style the markers a bit. This will be our listing marker icon.
   var defaultIcon = makeMarkerIcon('0091ff');
@@ -144,6 +145,7 @@ function initMap() {
 // on that markers position.
 function populateInfoWindow(marker, infowindow) {
  // Check to make sure the infowindow is not already opened on this marker.
+ console.log(infowindow);
   var position = locations[marker.id].location
   var foursquareAddr;
   var info = '';

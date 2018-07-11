@@ -7,7 +7,7 @@ import MainComponent from './MainComponent'
 class MapsApp extends React.Component {
   state = {
     placesList: PlacesAPI.locations,
-    markers: window.markers
+    markers: []
   }
   
   componentWillMount () {
@@ -33,13 +33,13 @@ class MapsApp extends React.Component {
     for (var i = 0; i < markers.length; i++) {
       markers[i].setMap(null);
     };
-    this.setState({markers: markers});
+    //this.setState({markers: markers});
   }
 
   hideAllMarkers = () => {
     for (var i = 0; i < window.markers.length; i++) {
       window.markers[i].setMap(null);
-      this.state.markers[i].setMap(null);
+      //this.state.markers[i].setMap(null);
     };
     //this.setState({markers: window.markers});
   }
@@ -49,7 +49,7 @@ class MapsApp extends React.Component {
     // Extend the boundaries of the map for each marker and display the marker
     for (var i = 0; i < markers.length; i++) {
       markers[i].setMap(window.map);
-      this.state.markers[i].setMap(window.map);
+      //this.state.markers[i].setMap(window.map);
       bounds.extend(markers[i].position);
     }
     window.map.fitBounds(bounds);
@@ -64,7 +64,7 @@ class MapsApp extends React.Component {
       bounds.extend(window.markers[i].position);
     }
     window.map.fitBounds(bounds);
-    this.setState({markers: window.markers});
+    //this.setState({markers: window.markers});
   }
 
   displayLocations = (places) => {
@@ -73,16 +73,18 @@ class MapsApp extends React.Component {
       return;
     }
     //var markers =[];
-    this.setState({markers : places.map(place => window.markers[place.id])})  
+    window.largeInfowindow.marker = null;
+    var markers = places.map(place => window.markers[place.id]) 
+    //this.setState({markers}) 
     this.hideAllMarkers()
     if (places.length === 0) {
       window.alert('We did not find any places matching that search!');
       return;
     }
-    this.showListingsOnly(this.state.markers)
-    var largeInfowindow = new window.google.maps.InfoWindow();
+    this.showListingsOnly(markers)
+    //var largeInfowindow = new window.google.maps.InfoWindow();
     if(places.length === 1){
-        this.populateInfoWindow(this.state.markers[0], largeInfowindow)
+        this.populateInfoWindow(markers[0], window.largeInfowindow)
     }
   }
 
