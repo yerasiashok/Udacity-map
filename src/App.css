@@ -64,7 +64,12 @@ ul {
   left: 315px;
   position: absolute;
   right: 1px;
-  
+   
+}
+
+h2 {
+  color:red;
+  text-align:center;
 }
 
 @media screen and (max-width: 375px) {

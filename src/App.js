@@ -46,6 +46,10 @@ class MapsApp extends React.Component {
   }
 
   displayLocations = (poi) => {
+    if(!window.google){
+      window.alert('Issue while loading the Map. \nCheck for Internet connectivity!!');
+      return;
+    }
     this.hideMarkers(this.state.markers)
     this.state.markers = []
     if (poi.length === 0) {
@@ -119,6 +123,7 @@ populateInfoWindow = (marker, infowindow, position) => {
       .then(res => res.json())
       .then(
         (result) => {
+          console.log(result)
           foursquareAddr = result.response.venues[0].location;
           if (foursquareAddr.address)
             info = foursquareAddr.address + ",";
@@ -129,9 +134,12 @@ populateInfoWindow = (marker, infowindow, position) => {
           streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
         },
         (error) => {
+          console.log("error")
           foursquareAddr = "Foursquare Not Responding"
         }
-      )
+      ).catch(function(error) {
+        console.log("*************");
+    });
 
     function getStreetView(data, status) {
       if (status === window.google.maps.StreetViewStatus.OK) {

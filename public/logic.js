@@ -27,6 +27,7 @@ var locations = [
 
 function initMap() {
   // Create a styles array to use with the map.
+  console.log("inside initMap")
   var styles = [
     {
       featureType: 'water',
@@ -196,6 +197,7 @@ var foursquareAddr;
       )
 
     function getStreetView(data, status) {
+      console.log("insude")
       if (status === window.google.maps.StreetViewStatus.OK) {
         var nearStreetViewLocation = data.location.latLng;
         var heading = window.google.maps.geometry.spherical.computeHeading(

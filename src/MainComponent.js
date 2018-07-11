@@ -35,8 +35,8 @@ class MainComponent extends React.Component {
     return (  
       <div>
         <header id="mySidenav" className="sidenav">
-          <span id="hamberger" onClick={() => this.openNav()}>&#9776;
-            <b>WIPRO Offices</b>
+          <span id="hamberger" tabIndex="1" onClick={() => this.openNav()}>&#9776;
+            <b> WIPRO Offices</b>
           </span>
         </header>
         <nav className="options-box container" id="navigate" >
@@ -54,6 +54,7 @@ class MainComponent extends React.Component {
           </div>
         </nav>
       <div id="map" role="application">
+       <h2> Please Wait Map is Loading... </h2>
       </div>
     </div>  
 
