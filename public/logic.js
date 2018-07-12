@@ -19,6 +19,10 @@ var locations = [
     {id: 12, title: 'Wipro Indore ', location: {lat: 22.749010, lng: 75.801279}}
   ];
 
+function gm_authFailure() {
+  window.alert('Issue while loading the Map.\nEncountered with Auth Failure.\nCheck for google Authentication credentials!!');
+}
+
 function initMap() {
   // Create a styles array to use with the map.
   markers = []
@@ -102,6 +106,9 @@ function initMap() {
   }
 }
 function displayLocations(poi){
+  if(!window.google){
+      window.alert('Issue while loading the Map. \nCheck for Internet connectivity!!');
+  }
   largeInfowindow = new google.maps.InfoWindow();
 
   // Style the markers a bit. This will be our listing marker icon.

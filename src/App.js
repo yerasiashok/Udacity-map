@@ -16,6 +16,10 @@ class MapsApp extends React.Component {
     document.body.appendChild(script);
   }
   
+  gm_authFailure = () => {
+    window.alert('Issue while loading the Map.\nEncountered auth failure. \nCheck for google Authentication credentials!!!!');
+  }
+
   makeMarkerIcon = (markerColor) => {
     var markerImage = new window.google.maps.MarkerImage(
       'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
